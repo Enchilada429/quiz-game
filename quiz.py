@@ -45,9 +45,28 @@ class Question:
         for i in range(0, len(self.answers)):
             print(f"{i + 1}. {self.answers[i]}")
 
-    def answer(self, guess: str) -> bool:
+    def validate_answer(self, guess: str) -> bool:
         """Return if a given answer is correct."""
         return guess == self.correct_answer
+
+    def pose(self) -> bool:
+        """Prompts the user to answer a question and returns
+        whether or not they were correct."""
+
+        self.display()
+
+        # Get the user to type something
+        user_answer = -1
+
+        while user_answer not in range(1, len(self.answers) + 1):
+            user_answer = int(input("Enter answer number: "))
+
+            if not isinstance(user_answer, int):
+                raise ValueError("Not a valid integer!")
+
+        user_answer = self.answers[user_answer - 1]
+
+        return self.validate_answer(user_answer)
 
 
 def get_questions(number: int = 5,
@@ -58,4 +77,4 @@ def get_questions(number: int = 5,
 
 
 if __name__ == "__main__":
-    get_questions(7, "medium")[0].display()
+    print(get_questions(7, "medium")[0].pose())
